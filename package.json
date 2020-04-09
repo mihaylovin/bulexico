@@ -1,0 +1,24 @@
+{
+  "name": "bg-vocabulary-tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "tool",
+    "vocabulary",
+    "bulgarian"
+  ],
+  "author": "Nikolay Mihaylov",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-html-parser": "^1.2.14"
+  },
+  "devDependencies": {
+    "jest": "^25.2.7"
+  }
+}
