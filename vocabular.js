@@ -5,36 +5,38 @@ const vocabular = () => {
     console.log("Vocabular initialized. Currently " + words.length + " words in the database");
     const joinedWords = "#" + words.join("##") + "#";
     const alphabet = "абвгдежзийклмнопрстуфхцчшщъьюя";
-    const testWords = ["абонамент", "керемида", "живот", "паралел", "въртолет", "хамбар", "иконоборец", "евангелист", "майка"];
     return {
         getAlphabet: () => {
             return alphabet;
         },
 
-        scrambles: (scrambledWords) => {
+        getScrambles: (scrambledWords) => {
             const patterns = scrambledWords.map((sw) => {
                 return {
-                    pattern: prepareRegexCon(sw),
+                    pattern: prepareScrambleRegexCon(sw),
                     original: sw
                 }
             });
 
-            return patterns.map(({pattern, original}) => {
-                return {
-                    original,
-                    scrambles: joinedWords.match(pattern).map((m) => {
-                        const matchedWord = m.slice(1, m.length-1);
-                        //remove one letter words and words using letters more letters than the original
-                        if (matchedWord.length > 1 && compareCharsMaps(getCharsMap(original), getCharsMap(matchedWord)))
-                        return matchedWord;
-                    }).filter((v) => v != null)
-                }
+            let scrambles = {};
+
+            patterns.forEach(({pattern, original}) => {
+                
+                scrambles[original] = joinedWords.match(pattern).map((m) => {
+                                        const matchedWord = m.slice(1, m.length-1);
+                                        //remove one letter words and words using letters more letters than the original
+                                        if (matchedWord.length > 1 && compareCharsMaps(getCharsMap(original), getCharsMap(matchedWord)))
+                                        return matchedWord;
+                                    }).filter((v) => v != null)
+                
             });
+
+            return scrambles;
         },
 
         scrambles2: () => {
             const patterns = testWords.map((tw) => {
-                return prepareRegexIt(tw);
+                return prepareScrambleRegexIt(tw);
             });
 
             words.forEach((w) => {
@@ -45,7 +47,7 @@ const vocabular = () => {
             });
         },
 
-        getDuplicates: () => {
+        checkForDuplicates: () => {
             let map = {};
             let result = {};
             words.forEach((w) => {
@@ -68,7 +70,7 @@ const vocabular = () => {
 
             const patterns = searchWords.map((word) => {
                 anagrams[word] = [];
-                let charsPattern = constructCharMapPattern(word);
+                let charsPattern = prepareCharMapPattern(word);
                 return {original: word, p: new RegExp("^" + charsPattern + ".{" + word.length + "," + max + "}$", "i")};
             });
 
@@ -82,8 +84,6 @@ const vocabular = () => {
                 });
                 
             });
-
-            console.log(anagrams);
 
             return anagrams;
         },
@@ -138,11 +138,13 @@ const vocabular = () => {
     }
 }
 
-const prepareRegexIt = (w) => {
+//when iterating
+const prepareScrambleRegexIt = (w) => {
     return new RegExp("^["+w+"]+$");
 }
 
-const prepareRegexCon = (w) => {
+//when concatenetade
+const prepareScrambleRegexCon = (w) => {
     return new RegExp("#["+w+"]+#", "g");
 }
 
@@ -158,7 +160,7 @@ const getCharsMap = (word) => {
     return map;
 }
 
-const constructCharMapPattern = (word) => {
+const prepareCharMapPattern = (word) => {
     const cMap = getCharsMap(word);
     let cmRegex = "";
     for(const k in cMap) {
@@ -196,4 +198,4 @@ exports = module.exports = vocabular;
 
 exports.getCharsMap = getCharsMap;
 exports.compareCharsMaps = compareCharsMaps;
-exports.constructCharMapPattern = constructCharMapPattern;
+exports.prepareCharMapPattern = prepareCharMapPattern;

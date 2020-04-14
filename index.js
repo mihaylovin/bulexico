@@ -9,11 +9,12 @@ app.get('/check/:word', (req, res) => {
     res.send(req.params);
 });
 
+//scrambles
 app.post("/scrambles", (req, res) => {
-    if (req.body && req.body.words) {
-        console.time("concat");
-        const response = vocabulary.scrambles(req.body.words);
-        console.timeEnd("concat");
+    if (req.body) {
+        console.time("getScrambles");
+        const response = vocabulary.getScrambles(req.body);
+        console.timeEnd("getScrambles");
     
         res.set('Content-Type', 'application/json')
         res.send(JSON.stringify(response));
@@ -23,9 +24,10 @@ app.post("/scrambles", (req, res) => {
     }
 });
 
+//extended anagrams
 app.post("/extended-anagrams/", (req, res) => {
-    if (req.body && req.body.words) {
-        const response = vocabulary.scrambles(req.body.words);
+    if (req.body) {
+        const response = vocabulary.getExtendedAnagrams(req.body);
     
         res.set('Content-Type', 'application/json')
         res.send(JSON.stringify(response));
@@ -35,16 +37,7 @@ app.post("/extended-anagrams/", (req, res) => {
     }
 });
 
-// app.get('/duplicates', (req, res) => {
-//     res.set('Content-Type', 'application/json')
-//     res.send(JSON.stringify(vocabulary.getDuplicates()));
-// });
-
-// app.get('/cleanup', (req, res) => {
-//     res.set('Content-Type', 'application/json')
-//     res.send(JSON.stringify(vocabulary.getCleanedUpSet()));
-// });
-
+//stats
 app.get('/stats', (req, res) => {
     res.set('Content-Type', 'application/json')
     res.send(JSON.stringify(vocabulary.getStatistics()));
@@ -53,7 +46,5 @@ app.get('/stats', (req, res) => {
 console.log("loading vocabulary...");
 const vocabulary = vocabular();
 console.log("vocabulary loaded");
-
-vocabulary.getExtendedAnagrams(["гьон", "дюля"]);
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
