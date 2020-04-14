@@ -27,15 +27,15 @@ yarn start
 
 # REST API
 
-## POST /scrambles 
+### POST /scrambles 
 Get all the words in the dictionary, which can be constructed using the letters of each parameter word.
 
-### Request - an arrays of words
+**Request** - an arrays of words
 ```
 ["дума", "магьосница"]
 ```
 
-### Response - an object of scrambles, where each parameter word is a key and the value are the scrambles
+**Response** - an object of scrambles, where each parameter word is a key and the value are the scrambles
 ```
 {
     "дума": ["ум", "да", "дума", ...],
@@ -43,15 +43,15 @@ Get all the words in the dictionary, which can be constructed using the letters 
 }
 ```
 
-## POST /extended-anagrams 
+### POST /extended-anagrams 
 Get all words in the dictionary, which contain at least all the letters in the parameter word.
 
-### Request - an arrays of words
+**Request** - an arrays of words
 ```
 ["гьон", "дюля"]
 ```
 
-### Response - an object of extended anagrams, where each parameter word is a key and the value are the anagrams
+**Response** - an object of extended anagrams, where each parameter word is a key and the value are the anagrams
 ```
 {
   'гьон': ['гьон', 'гальовен', 'магьосен', ...],
