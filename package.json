@@ -15,7 +15,7 @@
   "author": "Nikolay Mihaylov",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "node-html-parser": "^1.2.14"
   },
   "devDependencies": {
